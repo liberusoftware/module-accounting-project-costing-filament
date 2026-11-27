@@ -13,14 +13,16 @@ use Liberu\Accounting\ProjectCostingFilament\Resources\ProjectCostResource;
 
 it('registers and configures accounting-project-costing-filament filament resources', function (): void {
     $provider = $this->app->register(ProjectCostingFilamentServiceProvider::class, force: true);
-    if (method_exists($provider, 'boot')) { $provider->boot(); }
+    if (method_exists($provider, 'boot')) {
+        $provider->boot();
+    }
     expect($provider)->toBeInstanceOf(ProjectCostingFilamentServiceProvider::class);
     $plugin = ProjectCostingFilamentPlugin::make();
     $panel = Panel::make()->id('test-accounting-project-costing-filament');
     $plugin->register($panel);
     $plugin->boot($panel);
     expect($plugin->getId())->toBeString()->not->toBeEmpty();
-    $host = new ListProjectCosts;
+    $host = new ListProjectCosts();
     expect(ProjectCostResource::getPages())->toBeArray();
     expect(ProjectCostResource::getEloquentQuery())->toBeInstanceOf(Builder::class);
     expect(ProjectCostResource::form(Schema::make($host)))->toBeInstanceOf(Schema::class);
